@@ -64,8 +64,6 @@ set(SRCS
 add_library(swiftnav ${HDRS} ${SRCS})
 target_include_directories(swiftnav PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_include_directories(swiftnav PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-install(FILES ${HDRS} DESTINATION include/swiftnav)
-install(TARGETS swiftnav DESTINATION lib)
 
 target_compile_options(swiftnav PRIVATE "-Werror")
 target_compile_options(swiftnav PRIVATE "-Wmissing-prototypes")
@@ -83,6 +81,17 @@ target_compile_options(swiftnav PRIVATE "-Wimplicit-function-declaration")
 target_compile_options(swiftnav PRIVATE "-Wredundant-decls")
 target_compile_options(swiftnav PRIVATE "-Wformat-security")
 target_compile_options(swiftnav PRIVATE "-Wfloat-conversion")
+
+# Installation rules
+install(TARGETS swiftnav
+        EXPORT swiftnav-export
+        DESTINATION lib)
+install(FILES ${HDRS}
+        DESTINATION include/swiftnav)
+# Export the targets to the build tree for external projects to use
+export(EXPORT swiftnav-export
+        NAMESPACE LibSwiftNav::
+        FILE ${PROJECT_BINARY_DIR}/LibSwiftNavImport.cmake)
 
 # unit tests
 if(NOT CMAKE_CROSSCOMPILING AND NOT PIKSI_MULTI_UNIT_TEST)
