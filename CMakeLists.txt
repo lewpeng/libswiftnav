@@ -1,9 +1,15 @@
 cmake_minimum_required(VERSION 3.0)
+
+option(LIBSWIFTNAV_CLANG_TOOLS "Enables targets that format and lint the code" ON)
+
 project(libswiftnav)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/")
-include(ClangTools)
 include(FindCheck)
+
+if(LIBSWIFTNAV_CLANG_TOOLS)
+    include(ClangTools)
+endif()
 
 set(MAX_CHANNELS "63" CACHE STRING "Maximum number of concurrent GNSS channels to support.")
 configure_file(src/max_channels.h.in max_channels.h)
